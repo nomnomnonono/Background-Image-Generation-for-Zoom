@@ -1,5 +1,5 @@
 import gradio as gr
-from src.generate import generate
+from src.create import create_with_generate, create_with_upload
 
 with gr.Blocks() as demo:
     gr.Markdown("Generate background imgage for zoom using this demo.")
@@ -23,15 +23,47 @@ with gr.Blocks() as demo:
             green = gr.Slider(maximum=255, minimum=0, step=1, value=0, label="Blue")
             blue = gr.Slider(maximum=255, minimum=0, step=1, value=100, label="Green")
 
-            image_input = gr.Image(label="Input imgae")
-            button = gr.Button("Generate")
+            with gr.TabItem(label="Upload image"):
+                image_input = gr.Image(label="Input imgae")
+                upload_button = gr.Button("Generate")
+            with gr.TabItem(label="Generate image"):
+                with gr.Row():
+                    api_key = gr.Textbox(label="You own OpenAI API key")
+                    use_before = gr.Radio(
+                        ["Generate new one", "Use before one"], value="Generate new one"
+                    )
+                prompt = gr.Textbox(
+                    value="background image for zoom meeting",
+                    label="Prompt message to generate image",
+                )
+                generate_button = gr.Button("Generate")
         with gr.Column(scale=1):
             image_output = gr.Image(label="Output image")
 
-    button.click(
-        generate,
+    upload_button.click(
+        create_with_upload,
         inputs=[
             image_input,
+            name,
+            organization,
+            name_size,
+            organization_size,
+            vspace,
+            hspace,
+            interval_space,
+            red,
+            green,
+            blue,
+        ],
+        outputs=image_output,
+    )
+
+    generate_button.click(
+        create_with_generate,
+        inputs=[
+            prompt,
+            use_before,
+            api_key,
             name,
             organization,
             name_size,

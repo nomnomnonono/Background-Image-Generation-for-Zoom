@@ -12,6 +12,7 @@ gradio = "^3.28.1"
 matplotlib = "^3.7.1"
 Pillow = "^9.5.0"
 numpy = "^1.24.3"
+openai = "^0.27.5"
 
 [tool.poetry.dev-dependencies]
 pysen = {version = "^0.10.3", extras = ["lint"]}
