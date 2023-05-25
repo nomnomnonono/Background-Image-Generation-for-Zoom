@@ -9,9 +9,9 @@ HEIGHT = 1280
 
 
 def create_with_upload(
-    image,
-    name,
-    org,
+    image: np.ndarray,
+    name: str,
+    org: str,
     name_font_size=50,
     org_font_size=35,
     vspace=50,
@@ -20,7 +20,27 @@ def create_with_upload(
     red=0,
     green=0,
     blue=100,
-):
+) -> np.ndarray:
+    """
+    アップロードされた画像をもとに背景画像を作成する
+
+    Args:
+        image (np.ndarray): アップロード画像
+        name (str): 氏名
+        org (str): 所属組織
+        name_font_size (int, optional): 氏名のフォントサイズ. Defaults to 50.
+        org_font_size (int, optional): 組織のフォントサイズ. Defaults to 35.
+        vspace (int, optional): 縦方向のスペース. Defaults to 50.
+        hspace (int, optional): 横方向のスペース. Defaults to 50.
+        between (int, optional): 氏名と組織間のスペース. Defaults to 30.
+        red (int, optional): (R,G,B)のRの値. Defaults to 0.
+        green (int, optional): (R,G,B)のGの値. Defaults to 0.
+        blue (int, optional): (R,G,B)のBの値. Defaults to 100.
+
+    Returns:
+        np.ndarray: 背景画像
+    """
+
     img = Image.fromarray(image).resize((HEIGHT, WIDTH), resample=Image.BICUBIC)
     name_font = ImageFont.truetype("ヒラギノ丸ゴ ProN W4.ttc", name_font_size)
     org_font = ImageFont.truetype("ヒラギノ丸ゴ ProN W4.ttc", org_font_size)
@@ -36,11 +56,11 @@ def create_with_upload(
 
 
 def create_with_generate(
-    prompt,
-    use_before,
-    api_key,
-    name,
-    org,
+    prompt: str,
+    use_before: bool,
+    api_key: str,
+    name: str,
+    org: str,
     name_font_size=50,
     org_font_size=35,
     vspace=50,
@@ -49,7 +69,29 @@ def create_with_generate(
     red=0,
     green=0,
     blue=100,
-):
+) -> np.ndarray:
+    """
+    生成画像をもとに背景画像を作成する
+
+    Args:
+        prompt (str): 画像生成プロンプト
+        use_before (bool): 前回生成した画像をそのまま使うか否か
+        api_key (str): OpenAI API Key
+        name (str): 氏名
+        org (str): 所属組織
+        name_font_size (int, optional): 氏名のフォントサイズ. Defaults to 50.
+        org_font_size (int, optional): 組織のフォントサイズ. Defaults to 35.
+        vspace (int, optional): 縦方向のスペース. Defaults to 50.
+        hspace (int, optional): 横方向のスペース. Defaults to 50.
+        between (int, optional): 氏名と組織間のスペース. Defaults to 30.
+        red (int, optional): (R,G,B)のRの値. Defaults to 0.
+        green (int, optional): (R,G,B)のGの値. Defaults to 0.
+        blue (int, optional): (R,G,B)のBの値. Defaults to 100.
+
+    Returns:
+        np.ndarray: 背景画像
+    """
+
     openai.api_key = api_key
     if use_before == "Generate new one":
         response = openai.Image.create(
